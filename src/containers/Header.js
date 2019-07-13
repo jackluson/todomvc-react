@@ -3,7 +3,6 @@ import Header from '../components/Header'
 import {addTodo,toggleAll} from '../store/todos/action'
 import {getCompletedCount} from '../utils'
 
-
 const mapStateToProps = state => ({
   todosCount: state.todos.length,
   completedCount: getCompletedCount(state.todos)
