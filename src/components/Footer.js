@@ -27,7 +27,7 @@ const Footer = ({activeCount,completedCount,filterVal,showList,setVisibilityFilt
   )
 }
 const mapStateToProps = (state) => ({
-  activeCount:  state.todos.length - getCompletedCount(state.todos),
+  activeCount: state.todos.count() - getCompletedCount(state.todos),
   completedCount: getCompletedCount(state.todos),
   filterVal: state.visibilityFilter,
   showList: showList

@@ -2,46 +2,37 @@ import * as types from './action-type'
 import Immutable from 'immutable'
 
 const initState = [
-  {
-    text: 'Do todolist Demo',
-    completed: false,
-    id: 0
-  }
+  Immutable.Map(
+    {
+      text: 'Do todolist Demo',
+      completed: false,
+      id: 0
+    }
+  )
 ]
-export function todos (state = initState, action) {
-  let imuDatList
+const initImmutableState = Immutable.List(initState)
+export function todos(state = initImmutableState, action) {
   switch (action.type){
     case types.ADD_TODO:
-      imuDatList = Immutable.List(state)
       const imuItem = Immutable.Map({
         text: action.text,
         completed: false,
-        id: state.length > 0 ? state[state.length - 1].id + 1 : 0
+        id: state.count() > 0 ? state.get(state.count() - 1).get('id') + 1 : 0
       })
-      imuDatList = imuDatList.push(imuItem)
-      return imuDatList.toJS()
+      return state.push(imuItem)
     case types.TOGGLE_TODO:
-      imuDatList = Immutable.List(state)
-      imuDatList = imuDatList.map(todo =>
-        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
+      return state.map(todo =>{
+        return todo.get('id') === action.id ? todo.update('completed', val => !val): todo
+      }
       )
-      return imuDatList.toJS()
     case types.DELETE_TODO:
-      imuDatList = Immutable.List(state)
-      imuDatList =  imuDatList.filter(todo =>
-        todo.id !== action.id
+      return state.filter(todo =>
+        todo.get('id') !== action.id
       )
-      return imuDatList.toJS()
     case types.TOGGLE_ALL:
-      imuDatList = Immutable.List(state)
-      imuDatList =  imuDatList.map(todo => 
-          ({...todo, completed: !action.flag})
-        )
-      return imuDatList.toJS()
+      return state.map(todo => todo.update('completed',() => !action.flag))
     case types.CLEAR_COMPLETED:
-      imuDatList = Immutable.List(state)
-      imuDatList = imuDatList.filter(todo => todo.completed !== true)
-      return imuDatList.toJS()
+      return state.filter(todo => todo.get('completed') !== true)
     default:
     return state
   }

@@ -4,7 +4,7 @@ import {addTodo,toggleAll} from '../store/todos/action'
 import {getCompletedCount} from '../utils'
 
 const mapStateToProps = state => ({
-  todosCount: state.todos.length,
+  todosCount: state.todos.count(),
   completedCount: getCompletedCount(state.todos)
 })
 const mapDispatchToProps = dispatch => ({
