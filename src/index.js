@@ -10,7 +10,6 @@ import * as serviceWorker from './serviceWorker';
 
 console.log(store.getState())
 
-
 const render = Component => {
   ReactDOM.render(
     <Provider store={store}>

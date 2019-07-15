@@ -1,4 +1,5 @@
 import * as types from './action-type'
+import Immutable from 'immutable'
 
 const initState = [
   {
@@ -8,30 +9,39 @@ const initState = [
   }
 ]
 export function todos (state = initState, action) {
+  let imuDatList
   switch (action.type){
     case types.ADD_TODO:
-      return [
-        ...state,
-        {
-          text: action.text,
-          completed: false,
-          id: state.length > 0 ? state[state.length - 1].id + 1 : 0
-        }
-      ]
+      imuDatList = Immutable.List(state)
+      const imuItem = Immutable.Map({
+        text: action.text,
+        completed: false,
+        id: state.length > 0 ? state[state.length - 1].id + 1 : 0
+      })
+      imuDatList = imuDatList.push(imuItem)
+      return imuDatList.toJS()
     case types.TOGGLE_TODO:
-        return state.map(todo =>
-          todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-        )
+      imuDatList = Immutable.List(state)
+      imuDatList = imuDatList.map(todo =>
+        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
+      )
+      return imuDatList.toJS()
     case types.DELETE_TODO:
-        return state.filter(todo =>
-          todo.id !== action.id
-        )
+      imuDatList = Immutable.List(state)
+      imuDatList =  imuDatList.filter(todo =>
+        todo.id !== action.id
+      )
+      return imuDatList.toJS()
     case types.TOGGLE_ALL:
-        return state.map(todo => 
+      imuDatList = Immutable.List(state)
+      imuDatList =  imuDatList.map(todo => 
           ({...todo, completed: !action.flag})
         )
+      return imuDatList.toJS()
     case types.CLEAR_COMPLETED:
-        return state.filter(todo => todo.completed !== true)
+      imuDatList = Immutable.List(state)
+      imuDatList = imuDatList.filter(todo => todo.completed !== true)
+      return imuDatList.toJS()
     default:
     return state
   }
