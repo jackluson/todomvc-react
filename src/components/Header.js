@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Header = ({todosCount,completedCount,addTodo,toggleAll}) => {
+  console.log('here')
   function getEvtTarget(evt){
     const val = evt.target.value.trim()
     val && addTodo(val)
